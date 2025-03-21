@@ -177,6 +177,9 @@ namespace Pertemuan_ke_2
         private void BtnRefresh_Click(object sender, EventArgs e)
         {
 
+            LoadData(); // Memuat ulang data saat tombol refresh ditekan
+            MessageBox.Show($"Jumlah Kolom : {dgvMahasiswa.ColumnCount}\nJumlah Baris: {dgvMahasiswa.RowCount}",
+                "Debugging DataGridView", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void dgvMahasiswa_CellContentClick(object sender, DataGridViewCellEventArgs e)
