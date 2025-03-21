@@ -134,6 +134,43 @@ namespace Pertemuan_ke_2
         private void BtnHapus_Click(object sender, EventArgs e)
         {
 
+            if (dgvMahasiswa.SelectedRows.Count > 0) // Mengecek apakah ada data yang dipilih
+            {
+                DialogResult confirm = MessageBox.Show("Yakin ingin menghapus data ini?", "Konfirmasi", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (confirm == DialogResult.Yes)
+                {
+                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    {
+                        try
+                        {
+                            string nim = dgvMahasiswa.SelectedRows[0].Cells["NIM"].Value.ToString();
+                            conn.Open(); // Membuka koneksi database
+                            string query = "DELETE FROM Mahasiswa WHERE NIM = @NIM";
+
+                            using (SqlCommand cmd = new SqlCommand(query, conn))
+                            {
+                                cmd.Parameters.AddWithValue("@NIM", nim);
+                                int rowsAffected = cmd.ExecuteNonQuery();
+
+                                if (rowsAffected > 0)
+                                {
+                                    MessageBox.Show("Data berhasil dihapus!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    LoadData(); // Memuat ulang data setelah penghapusan
+                                    ClearForm();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Data tidak berhasil dihapus", "Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Error: " + ex.Message, "Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
         }
 
 
